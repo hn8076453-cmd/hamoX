@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>تحليل الرقم القومي المصري | @oa0io</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1a 0%, #03060c 100%);
+            font-family: 'Cairo', 'Tahoma', monospace;
+            min-height: 100vh;
+            color: #00ffaa;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,255,170,0.03) 0px, rgba(0,255,170,0.03) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .auth-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000ee;
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: 0.5s;
+        }
+
+        .auth-box {
+            background: #0a0f1a;
+            border: 2px solid #00ffaa;
+            border-radius: 40px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0,255,170,0.3);
+        }
+
+        .auth-box h1 {
+            color: #00ffaa;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .auth-box .dev {
+            color: #ffaa44;
+            margin-bottom: 25px;
+        }
+
+        .auth-box input {
+            background: #000;
+            border: 1px solid #00ffaa;
+            padding: 15px 20px;
+            margin: 15px 0;
+            color: #00ffaa;
+            font-size: 1.2rem;
+            text-align: center;
+            width: 280px;
+            border-radius: 50px;
+            font-family: monospace;
+            outline: none;
+        }
+
+        .auth-box button {
+            background: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 12px 35px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 1rem;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .auth-box button:hover {
+            background: #00cc88;
+            transform: scale(1.02);
+        }
+
+        .error-msg {
+            color: #ff5555;
+            margin-top: 15px;
+        }
+
+        .main-content {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            border-bottom: 2px solid #00ffaa;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #001510, #000000);
+            border-radius: 30px;
+        }
+
+        .header h1 {
+            color: #00ffaa;
+            font-size: 2rem;
+            text-shadow: 0 0 10px #0fa;
+        }
+
+        .header .developer {
+            color: #ffaa44;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tool-card {
+            background: #0a0f1a;
+            border: 1px solid #00ffaa;
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(0,255,170,0.1);
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #00ffaa;
+            text-align: center;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .input-area textarea {
+            flex: 1;
+            background: #000;
+            border: 1px solid #00ffaa;
+            padding: 15px;
+            color: #00ffaa;
+            font-family: monospace;
+            font-size: 1rem;
+            border-radius: 15px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .input-area button {
+            background: #00ffaa;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .input-area button:hover {
+            background: #00cc88;
+            transform: scale(1.02);
+        }
+
+        .results {
+            margin-top: 25px;
+        }
+
+        .result-item {
+            background: #000000aa;
+            border: 1px solid #00ffaa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+
+        .result-item:hover {
+            border-color: #ffaa44;
+            box-shadow: 0 0 10px rgba(255,170,68,0.3);
+        }
+
+        .result-number {
+            color: #ffaa44;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .result-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .result-data span {
+            color: #88ffaa;
+        }
+
+        .error-item {
+            background: #331a00;
+            border: 1px solid #ff5555;
+            color: #ff8888;
+        }
+
+        .info-card {
+            background: #0a0f1a;
+            border: 1px solid #00ffaa;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .info-card h3 {
+            color: #ffaa44;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            line-height: 1.8;
+            color: #ccffcc;
+        }
+
+        .code-example {
+            background: #000;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #00ffaa;
+            color: #00aa88;
+        }
+
+        @media (max-width: 700px) {
+            .input-area textarea { min-height: 100px; }
+            .result-data { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-screen" id="authScreen">
+    <div class="auth-box">
+        <h1>⚡ NID ANALYZER ⚡</h1>
+        <div class="dev">@oa0io | @mtech403</div>
+        <input type="password" id="passInput" placeholder="مفتاح الدخول" autocomplete="off">
+        <button id="unlockBtn">فك القفل</button>
+        <div class="error-msg" id="errorMsg"></div>
+    </div>
+</div>
+
+<div class="main-content" id="mainContent">
+    <div class="container">
+        <div class="header">
+            <h1>🔍 تحليل الرقم القومي المصري 🔍</h1>
+            <div class="developer">⚡ المطور: @oa0io | قناة: @mtech403 ⚡</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-title">📝 أداة التحقق من الرقم القومي</div>
+            <div class="input-area">
+                <textarea id="nidInput" placeholder="أدخل الرقم القومي (14 رقمًا)&#10;يمكن إدخال عدة أرقام، كل رقم في سطر منفصل&#10;مثال:&#10;29901011234567&#10;30001021234568"></textarea>
+                <button id="analyzeBtn">🔍 تحليل</button>
+                <button id="clearBtn">🗑️ مسح</button>
+            </div>
+            <div class="results" id="resultsArea">
+                <div style="text-align: center; color: #88aa88; padding: 40px;">
+                    ⚡ انتظر إدخال الأرقام للتحليل ⚡
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>📖 كيف يتم تكوين الرقم القومي؟</h3>
+            <p>
+                <strong>الرقم القومي المصري</strong> يتكون من 14 رقمًا، ويُستخدم للتعريف الرسمي في جميع المعاملات.
+            </p>
+            <div class="code-example">
+                مثال: 2 99 01 01 12 3456 7<br>
+                │  │  │  │  │   │    └─ الرقم الرابع عشر (النوع والتحقق)<br>
+                │  │  │  │  │   └────── الرقم التسلسلي (4 أرقام)<br>
+                │  │  │  │  └────────── كود المحافظة (رقمان)<br>
+                │  │  │  └───────────── يوم الميلاد (رقمان)<br>
+                │  │  └──────────────── شهر الميلاد (رقمان)<br>
+                │  └─────────────────── آخر رقمين من سنة الميلاد<br>
+                └────────────────────── القرن (2 = 1900-1999، 3 = 2000-2099)
+            </div>
+            <p>
+                <strong>📍 كود المحافظة:</strong> 01 = القاهرة، 02 = الإسكندرية، 03 = بورسعيد، 04 = السويس، 11 = دمياط، 12 = الدقهلية، 13 = الشرقية، 14 = القليوبية، 15 = كفر الشيخ، 16 = الغربية، 17 = المنوفية، 18 = البحيرة، 19 = الإسماعيلية، 21 = الجيزة، 22 = بني سويف، 23 = الفيوم، 24 = المنيا، 25 = أسيوط، 26 = سوهاج، 27 = قنا، 28 = الأقصر، 29 = أسوان، 31 = البحر الأحمر، 32 = الوادي الجديد، 33 = مطروح، 34 = شمال سيناء، 35 = جنوب سيناء، 88 = خارج الجمهورية
+            </p>
+            <p>
+                <strong>⚧ النوع:</strong> الرقم الرابع عشر إذا كان <span style="color:#ffaa44;">فردي</span> = ذكر، إذا كان <span style="color:#ffaa44;">زوجي</span> = أنثى.
+            </p>
+        </div>
+
+        <footer>
+            🔥 @oa0io | @mtech403 🔥<br>
+            جميع العمليات تتم محليًا في المتصفح — لا يتم تخزين أي بيانات
+        </footer>
+    </div>
+</div>
+
+<script>
+    const AUTH_KEY = "ALBAHRAWi";
+    
+    document.getElementById('unlockBtn').onclick = function() {
+        const input = document.getElementById('passInput').value;
+        if (input === AUTH_KEY) {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        } else {
+            document.getElementById('errorMsg').innerText = '❌ مفتاح الدخول غير صحيح';
+        }
+    };
+    
+    document.getElementById('passInput').onkeypress = function(e) {
+        if (e.key === 'Enter') document.getElementById('unlockBtn').click();
+    };
+
+    const governorates = {
+        '01': 'القاهرة', '02': 'الإسكندرية', '03': 'بورسعيد', '04': 'السويس',
+        '11': 'دمياط', '12': 'الدقهلية', '13': 'الشرقية', '14': 'القليوبية',
+        '15': 'كفر الشيخ', '16': 'الغربية', '17': 'المنوفية', '18': 'البحيرة',
+        '19': 'الإسماعيلية', '21': 'الجيزة', '22': 'بني سويف', '23': 'الفيوم',
+        '24': 'المنيا', '25': 'أسيوط', '26': 'سوهاج', '27': 'قنا',
+        '28': 'الأقصر', '29': 'أسوان', '31': 'البحر الأحمر', '32': 'الوادي الجديد',
+        '33': 'مطروح', '34': 'شمال سيناء', '35': 'جنوب سيناء', '88': 'خارج الجمهورية'
+    };
+
+    function analyzeNID(nid) {
+        nid = nid.trim();
+        
+        if (nid.length !== 14) {
+            return { valid: false, error: 'الرقم يجب أن يكون 14 رقمًا' };
+        }
+        
+        if (!/^\d+$/.test(nid)) {
+            return { valid: false, error: 'يجب أن يحتوي على أرقام فقط' };
+        }
+        
+        try {
+            const century = nid[0];
+            const birthYear = nid.substring(1, 3);
+            const birthMonth = nid.substring(3, 5);
+            const birthDay = nid.substring(5, 7);
+            const govCode = nid.substring(7, 9);
+            const serial = nid.substring(9, 13);
+            const genderCheck = nid[13];
+            
+            let fullYear;
+            if (century === '2') {
+                fullYear = '19' + birthYear;
+            } else if (century === '3') {
+                fullYear = '20' + birthYear;
+            } else {
+                return { valid: false, error: 'القرن غير صالح (يجب أن يكون 2 أو 3)' };
+            }
+            
+            const birthDate = new Date(fullYear, parseInt(birthMonth) - 1, parseInt(birthDay));
+            if (birthDate.getFullYear() != fullYear || birthDate.getMonth() != parseInt(birthMonth) - 1 || birthDate.getDate() != parseInt(birthDay)) {
+                return { valid: false, error: 'تاريخ الميلاد غير صالح' };
+            }
+            
+            const gender = parseInt(genderCheck) % 2 === 0 ? 'أنثى' : 'ذكر';
+            const governorate = governorates[govCode] || 'غير معروف';
+            
+            return {
+                valid: true,
+                nid: nid,
+                century: century === '2' ? '1900-1999' : '2000-2099',
+                birthDate: `${birthDay}/${birthMonth}/${fullYear}`,
+                birthDay: birthDay,
+                birthMonth: birthMonth,
+                birthYear: fullYear,
+                governorate: governorate,
+                govCode: govCode,
+                serial: serial,
+                gender: gender,
+                genderDigit: genderCheck
+            };
+        } catch(e) {
+            return { valid: false, error: 'خطأ في تحليل الرقم' };
+        }
+    }
+    
+    function displayResults() {
+        const input = document.getElementById('nidInput').value;
+        const lines = input.split('\n').filter(line => line.trim().length > 0);
+        const resultsDiv = document.getElementById('resultsArea');
+        
+        if (lines.length === 0) {
+            resultsDiv.innerHTML = '<div style="text-align: center; color: #88aa88; padding: 40px;">📝 الرجاء إدخال رقم قومي للتحليل</div>';
+            return;
+        }
+        
+        let resultsHtml = '';
+        let validCount = 0;
+        let invalidCount = 0;
+        
+        for (let i = 0; i < Math.min(lines.length, 50); i++) {
+            const nid = lines[i];
+            const result = analyzeNID(nid);
+            
+            if (result.valid) {
+                validCount++;
+                resultsHtml += `
+                    <div class="result-item">
+                        <div class="result-number">📌 ${result.nid}</div>
+                        <div class="result-data">
+                            <div>📅 تاريخ الميلاد: <span>${result.birthDate}</span></div>
+                            <div>📍 المحافظة: <span>${result.governorate} (${result.govCode})</span></div>
+                            <div>⚧ النوع: <span>${result.gender}</span></div>
+                            <div>🔢 الرقم التسلسلي: <span>${result.serial}</span></div>
+                            <div>📖 القرن: <span>${result.century}</span></div>
+                            <div>✅ الحالة: <span style="color:#00ffaa;">صحيح</span></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                invalidCount++;
+                resultsHtml += `
+                    <div class="result-item error-item">
+                        <div class="result-number">❌ ${nid}</div>
+                        <div class="result-data">
+                            <div>⚠️ خطأ: <span style="color:#ff8888;">${result.error}</span></div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        const statsHtml = `
+            <div style="background: #001510; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
+                📊 الإحصائيات: ✅ صحيح: ${validCount} | ❌ غير صحيح: ${invalidCount} | 📝 المجموع: ${validCount + invalidCount}
+            </div>
+            ${resultsHtml}
+        `;
+        
+        resultsDiv.innerHTML = statsHtml;
+    }
+    
+    function clearFields() {
+        document.getElementById('nidInput').value = '';
+        document.getElementById('resultsArea').innerHTML = '<div style="text-align: center; color: #88aa88; padding: 40px;">✨ تم المسح — أدخل أرقامًا جديدة للتحليل ✨</div>';
+    }
+    
+    document.getElementById('analyzeBtn').onclick = displayResults;
+    document.getElementById('clearBtn').onclick = clearFields;
+    
+    document.getElementById('nidInput').onkeydown = function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+            displayResults();
+        }
+    };
+</script>
+</body>
+</html>
