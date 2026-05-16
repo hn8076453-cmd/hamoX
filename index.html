@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Sport Gym |    </title>
+  <!-- Font Awesome 6 (Free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0b0e14, #030507);
+      font-family: 'Segoe UI', 'Tahoma', system-ui, -apple-system, 'Cairo', sans-serif;
+      color: #f0f3f8;
+      direction: rtl;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00ffa0;
+      border-radius: 8px;
+    }
+
+    /* overlay welcome with modern vibe */
+    #overlay {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #000000e0;
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      animation: vanishOverlay 1.2s ease forwards;
+      animation-delay: 2.2s;
+      pointer-events: none;
+    }
+
+    .overlay-content {
+      text-align: center;
+      transform: translateY(-10px);
+    }
+
+    .overlay-content i {
+      font-size: 64px;
+      color: #00ffaa;
+      filter: drop-shadow(0 0 12px #00ffaa88);
+      animation: pulseIcon 0.9s infinite alternate;
+    }
+
+    .overlay-content h1 {
+      font-size: 2.4rem;
+      background: linear-gradient(135deg, #fff, #00ffaa);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-top: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    @keyframes pulseIcon {
+      0% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 0 #00ffaa;}
+      100% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 20px #00ffaa;}
+    }
+
+    @keyframes vanishOverlay {
+      0% { opacity: 1; visibility: visible; backdrop-filter: blur(12px);}
+      80% { opacity: 0.5; visibility: visible;}
+      100% { opacity: 0; visibility: hidden; backdrop-filter: blur(0);}
+    }
+
+    /* animated gradient header */
+    header {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      padding: 1.2rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(120deg, #ffffff, #00ffb3);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h1 i {
+      background: none;
+      color: #00ffaa;
+      font-size: 2rem;
+      background-clip: unset;
+      -webkit-background-clip: unset;
+    }
+
+    /* hero section with modern frame */
+    .hero {
+      padding: 20px 20px 0 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .img-container {
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 25px 35px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,170,0.2);
+      transition: all 0.4s ease;
+    }
+
+    .hero img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .img-container:hover img {
+      transform: scale(1.02);
+    }
+
+    /* grid layout for cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1300px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: rgba(20, 25, 35, 0.75);
+      backdrop-filter: blur(5px);
+      border-radius: 32px;
+      padding: 28px 22px;
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(0, 255, 170, 0.2);
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: #00ffaa;
+      background: rgba(28, 34, 48, 0.85);
+      box-shadow: 0 25px 35px -12px #00ffaa20;
+    }
+
+    .card i {
+      font-size: 3rem;
+      color: #00ffaa;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .card h2 {
+      font-size: 1.9rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      background: linear-gradient(145deg, #f0f0f0, #aaffdd);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 12px 0;
+      color: #dddce0;
+    }
+
+    .price-badge {
+      display: inline-block;
+      background: #00ffaa20;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: bold;
+      margin: 6px 0;
+      font-size: 1.1rem;
+      border: 1px solid #00ffaa40;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(105deg, #00cc88, #00ffaa);
+      padding: 12px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      color: #0a0f1a;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: 0.2s;
+      box-shadow: 0 6px 14px rgba(0, 255, 170, 0.3);
+      margin-top: 12px;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      background: linear-gradient(105deg, #00ffaa, #00dd99);
+      box-shadow: 0 10px 22px #00ffaa60;
+      color: #000;
+    }
+
+    /* floating whatsapp button modern */
+    .float-wa {
+      position: fixed;
+      bottom: 22px;
+      left: 22px;
+      background: #25D366;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 0 4px #25d36630;
+      transition: 0.2s;
+      z-index: 1100;
+    }
+
+    .float-wa i {
+      font-size: 34px;
+      color: white;
+    }
+
+    .float-wa:hover {
+      transform: scale(1.1);
+      background: #20b859;
+      box-shadow: 0 12px 24px #25d36680;
+    }
+
+    /* footer */
+    footer {
+      background: #03070c;
+      padding: 28px 20px;
+      text-align: center;
+      color: #8e9aaf;
+      border-top: 1px solid #00ffaa20;
+      margin-top: 30px;
+      font-size: 0.9rem;
+    }
+
+    .footer-heart i {
+      color: #ff5e7e;
+    }
+
+    /* time / contact details highlight */
+    .highlight-text {
+      font-weight: bold;
+      color: #00ffcc;
+      background: #00ff2210;
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 40px;
+    }
+
+    @media (max-width: 680px) {
+      .card h2 { font-size: 1.6rem; }
+      header h1 { font-size: 1.7rem; }
+      .overlay-content h1 { font-size: 1.6rem;}
+      .hero img { max-height: 220px; }
+      .btn-primary { padding: 10px 20px; }
+    }
+
+    /* tiny extra animation */
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(20px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+
+    .card {
+      animation: fadeSlide 0.6s ease backwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.25s; }
+    .card:nth-child(4) { animation-delay: 0.35s; }
+    .card:nth-child(5) { animation-delay: 0.45s; }
+  </style>
+</head>
+<body>
+
+  <!-- Entrance Welcome Overlay (Modern) -->
+  <div id="overlay">
+    <div class="overlay-content">
+      <i class="fas fa-dumbbell"></i>
+      <h1> Sport Gym |   </h1>
+    </div>
+  </div>
+
+  <!-- Sticky Header with animated glow -->
+  <header>
+    <h1>
+      <i class="fas fa-fire-flame-curved"></i> 
+      Sport Gym
+      <i class="fas fa-heartbeat"></i>
+    </h1>
+  </header>
+
+  <!-- Hero Section with enhanced gym image -->
+  <div class="hero">
+    <div class="img-container">
+      <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="  -  " loading="eager">
+    </div>
+  </div>
+
+  <!-- Dynamic Cards Grid (all original info preserved) -->
+  <div class="cards-grid">
+    <!-- welcome card -->
+    <div class="card">
+      <i class="fas fa-hand-peace"></i>
+      <h2>  </h2>
+      <p>       <br>
+             .</p>
+    </div>
+
+    <!-- prices card -->
+    <div class="card">
+      <i class="fas fa-tags"></i>
+      <h2> </h2>
+      <div class="price-badge">   : 250 </div>
+      <div class="price-badge" style="margin-top: 8px;">  +  +  : 300 </div>
+      <p style="margin-top: 15px;">   –    </p>
+    </div>
+
+    <!-- timing card -->
+    <div class="card">
+      <i class="fas fa-clock"></i>
+      <h2> </h2>
+      <p><span class="highlight-text"><i class="far fa-clock"></i> 4   2 </span></p>
+      <p>          .</p>
+    </div>
+
+    <!-- contact card -->
+    <div class="card">
+      <i class="fas fa-phone-alt"></i>
+      <h2> </h2>
+      <p style="font-size: 1.4rem; letter-spacing: 1px; font-weight: bold;">+201017552356</p>
+      <p><i class="fab fa-whatsapp" style="color: #25D366;"></i>     </p>
+    </div>
+
+    <!-- subscription card with updated whatsapp group channel link (kept original link) -->
+    <div class="card">
+      <i class="fab fa-whatsapp"></i>
+      <h2>  </h2>
+      <p>   Sport Gym –    !</p>
+      <a class="btn-primary" href="https://chat.whatsapp.com/JLH2tcKWK5DIwDv29HqJT8" target="_blank">
+        <i class="fab fa-whatsapp"></i>  
+      </a>
+    </div>
+  </div>
+
+  <!-- Additional motivational strip (optional small touch but keeps clean) -->
+  <div style="max-width: 1000px; margin: 10px auto 0 auto; padding: 8px 20px; text-align: center;">
+    <p style="font-size: 0.9rem; background: #00ffaa10; display: inline-block; padding: 8px 20px; border-radius: 60px;">
+      <i class="fas fa-check-circle" style="color: #00ffaa;"></i>   |    |  
+    </p>
+  </div>
+
+  <!-- Floating WhatsApp button (same number) -->
+  <a class="float-wa" href="https://wa.me/201017552356" target="_blank" aria-label="">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Footer with copyright -->
+  <footer>
+    <div class="footer-heart">
+      <i class="fas fa-dumbbell"></i> Sport Gym  •      <i class="fas fa-heart" style="color:#00ffaa;"></i>
+    </div>
+    <div style="margin-top: 10px;">©    –    </div>
+  </footer>
+
+  <!-- optional dynamic script for extra assurance (no functionality altered) -->
+  <script>
+    (function() {
+      // ensure overlay disappears perfectly after transition
+      const overlayDiv = document.getElementById('overlay');
+      if(overlayDiv) {
+        setTimeout(() => {
+          if(overlayDiv.style.visibility !== 'hidden') {
+            overlayDiv.style.opacity = '0';
+            overlayDiv.style.visibility = 'hidden';
+          }
+        }, 3400);
+      }
+      // add a subtle hover effect on cards (already css)
+      console.log("GYM site - redesigned modern with full content preserved");
+    })();
+  </script>
+</body>
+</html>
