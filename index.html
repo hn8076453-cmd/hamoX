@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 تويست ميوزك - ويب</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', 'Segoe UI', sans-serif; }
+        body {
+            background: linear-gradient(180deg, #0f0c20 0%, #15102a 50%, #060409 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(25, 20, 45, 0.7);
+            backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 30px 25px;
+            border: 1px solid rgba(138, 43, 226, 0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        .logo h1 {
+            font-size: 2rem;
+            text-align: center;
+            background: linear-gradient(90deg, #00f2fe, #9b51e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo p { text-align: center; color: #b3b0cd; margin: 5px 0 20px; }
+        input, select {
+            width: 100%;
+            padding: 16px 20px;
+            margin: 10px 0;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input:focus, select:focus { border-color: #00f2fe; box-shadow: 0 0 20px rgba(0,242,254,0.2); }
+        input::placeholder { color: rgba(255,255,255,0.4); }
+        select option { background: #15102a; color: #fff; }
+        button {
+            width: 100%;
+            padding: 16px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(90deg, #00f2fe, #00b8ff);
+            color: #090714;
+            box-shadow: 0 4px 20px rgba(0,242,254,0.3);
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0,242,254,0.4); }
+        button:active { transform: scale(0.98); }
+        .btn-success { background: linear-gradient(90deg, #00e676, #00c853); }
+        .btn-danger { background: linear-gradient(90deg, #ff1744, #d50000); color: #fff; }
+        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.15); color: #b3b0cd; }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .balance-box {
+            background: linear-gradient(135deg, rgba(155,81,224,0.15), rgba(0,242,254,0.05));
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(155,81,224,0.25);
+            margin: 15px 0;
+        }
+        .balance-box .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #00f2fe;
+            display: block;
+            margin-top: 5px;
+            text-shadow: 0 0 20px rgba(0,242,254,0.3);
+        }
+        .alert {
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin: 10px 0;
+            font-weight: 700;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .alert-success { background: rgba(0,230,118,0.15); color: #69f0ae; border: 1px solid rgba(0,230,118,0.3); }
+        .alert-danger { background: rgba(255,23,68,0.15); color: #ff5252; border: 1px solid rgba(255,23,68,0.3); }
+        .alert-warning { background: rgba(255,234,0,0.15); color: #ffd740; border: 1px solid rgba(255,234,0,0.3); }
+        .timer {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: rgba(0,242,254,0.1);
+            border: 1px solid rgba(0,242,254,0.2);
+            color: #00f2fe;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .notice {
+            background: rgba(255,234,0,0.06);
+            border: 1px dashed rgba(255,234,0,0.4);
+            border-radius: 18px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #ffe082;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #00f2fe;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .dev-footer { margin-top: 20px; text-align: center; }
+        .dev-footer a {
+            display: block;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            color: #b3b0cd;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .dev-footer a:hover { background: rgba(155,81,224,0.2); color: #fff; }
+        .dhikr { margin-top: 10px; padding: 10px; color: #a5a1c5; font-size: 0.9rem; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <h1>🎵 تويست ميوزك</h1>
+        <p>🌟 استمتع واربح الكوينز</p>
+    </div>
+    <div id="content"></div>
+    <div class="dev-footer">
+        <a href="https://t.me/c_hjj" target="_blank">👤 المطور</a>
+        <a href="https://t.me/mtech403" target="_blank">📢 قناة المطور</a>
+        <div class="dhikr">لا تنسى ذكر الله ♥</div>
+    </div>
+</div>
+
+<script>
+// ============================================
+// 1. الإعدادات
+// ============================================
+const API_BASE = 'https://api.twistmena.com/music';
+const PROXY_URL = 'https://corsproxy.io/?';
+const MAX_OTP = 3;
+
+let state = {
+    step: 'phone',
+    phone: '',
+    token: '',
+    accessToken: '',
+    tgToken: '',
+    refreshToken: '',
+    balance: 0,
+    otpTime: null,
+    otpAttempts: 0
+};
+
+// ============================================
+// 2. دوال API (مع Proxy)
+// ============================================
+function getHeaders(extra = {}) {
+    const headers = {
+        'user-agent': 'Twist-Mobile/11.2.9 (Android; 15; Infinix X6885; music; ar-EG)',
+        'app_version': '11.2.9',
+        'appversion': '11.2.9',
+        'channel': 'mobileapp',
+        'platform': 'android',
+        'accept': 'application/json',
+        'accept-language': 'ar',
+        'content-type': 'application/json',
+        'device_id': 'AP3A.240905.015.A2',
+        'tgdeviceid': '',
+        'sessionid': '3561cb90-573e-4351-bdd9-f3472a01e58e',
+        ...extra
+    };
+    if (state.token) headers['Authorization'] = `Bearer ${state.token}`;
+    if (state.accessToken) headers['access-token'] = state.accessToken;
+    if (state.tgToken) headers['tg-token'] = state.tgToken;
+    if (state.refreshToken) headers['tg-refresh-token'] = state.refreshToken;
+    return headers;
+}
+
+async function apiReq(endpoint, method = 'POST', body = null) {
+    const targetUrl = API_BASE + endpoint;
+    const fullUrl = PROXY_URL + encodeURIComponent(targetUrl);
+    
+    const headers = getHeaders();
+    // شيل الـ Headers الزيادة
+    delete headers.host;
+    delete headers.connection;
+    delete headers['accept-encoding'];
+    delete headers['content-length'];
+    
+    const options = {
+        method,
+        headers: headers,
+        body: body ? JSON.stringify(body) : null
+    };
+
+    try {
+        console.log('📤 إرسال طلب إلى:', fullUrl);
+        console.log('📦 الـ Body:', body);
+        
+        const response = await fetch(fullUrl, options);
+        const data = await response.json();
+        console.log('📥 الـ Response:', data);
+        return { code: response.status, body: data };
+    } catch (error) {
+        console.error('❌ خطأ في الاتصال:', error);
+        return { code: 0, body: { message: 'خطأ في الاتصال: ' + error.message } };
+    }
+}
+
+function formatPhone(phone) {
+    phone = phone.trim().replace(/\s/g, '').replace(/\+/g, '');
+    if (phone.startsWith('0')) return '20' + phone.slice(1);
+    if (phone.startsWith('20')) return phone;
+    return '20' + phone;
+}
+
+// ============================================
+// 3. دوال إرسال الكود
+// ============================================
+async function sendOtp() {
+    const input = document.getElementById('phoneInput');
+    if (!input) return;
+    const phone = input.value.trim();
+    if (!phone) return showAlert('أدخل رقم الهاتف', 'danger');
+    
+    const formatted = formatPhone(phone);
+    showLoading('جاري إرسال رمز التحقق...');
+    
+    const res = await apiReq('/Dlogin/sendCode', 'POST', { dial: formatted });
+    hideLoading();
+    
+    console.log('📊 Result:', res);
+    
+    if (res.code === 200) {
+        state.phone = formatted;
+        state.step = 'verify';
+        state.otpTime = Date.now();
+        state.otpAttempts = 0;
+        showAlert('✅ تم إرسال الكود بنجاح', 'success');
+        render();
+    } else {
+        showAlert('❌ فشل الإرسال: ' + (res.body.message || 'خطأ غير معروف (كود ' + res.code + ')'), 'danger');
+    }
+}
+
+async function resendOtp() {
+    if (!state.phone) return showAlert('الرجاء إدخال رقم الهاتف أولاً', 'danger');
+    showLoading('جاري إعادة الإرسال...');
+    const res = await apiReq('/Dlogin/sendCode', 'POST', { dial: state.phone });
+    hideLoading();
+    if (res.code === 200) {
+        state.otpTime = Date.now();
+        state.otpAttempts = 0;
+        showAlert('✅ أعيد الإرسال بنجاح', 'success');
+        render();
+    } else {
+        showAlert('❌ فشل إعادة الإرسال', 'danger');
+    }
+}
+
+async function verifyOtp() {
+    const input = document.getElementById('codeInput');
+    if (!input) return;
+    const code = input.value.trim();
+    if (!code || code.length !== 6) return showAlert('أدخل الكود المكون من 6 أرقام', 'danger');
+    if (state.otpTime && Date.now() - state.otpTime > 30000) return showAlert('انتهت صلاحية الكود', 'danger');
+    
+    state.otpAttempts++;
+    if (state.otpAttempts > MAX_OTP) return showAlert('تجاوزت الحد الأقصى للمحاولات', 'danger');
+    
+    showLoading('جاري التحقق...');
+    const res = await apiReq('/Dlogin/verify', 'POST', {
+        dial: state.phone,
+        verifyCode: code,
+        socialServiceName: '',
+        socialServiceToken: ''
+    });
+    hideLoading();
+    
+    console.log('📊 Verify Result:', res);
+    
+    if (res.code === 200) {
+        state.token = res.body.token || '';
+        state.accessToken = res.body.accessToken || '';
+        state.tgToken = res.body.tgToken || '';
+        state.refreshToken = res.body.refreshToken || '';
+        
+        const balanceRes = await apiReq('/user/loyalty/balance/details', 'GET');
+        state.balance = balanceRes.code === 200 ? (balanceRes.body.balance || 0) : 0;
+        state.step = 'dashboard';
+        showAlert('✅ تم تسجيل الدخول بنجاح!', 'success');
+        render();
+    } else {
+        const remaining = MAX_OTP - state.otpAttempts;
+        showAlert(`❌ الكود غير صحيح. المحاولات المتبقية: ${Math.max(0, remaining)}`, 'danger');
+    }
+}
+
+function goToPhone() {
+    state.step = 'phone';
+    render();
+}
+
+// ============================================
+// 4. لوحة التحكم (نفسها)
+// ============================================
+async function completeTasks() {
+    if (!state.token) return showAlert('الرجاء تسجيل الدخول أولاً', 'danger');
+    showLoading('جاري إنجاز المهام...');
+    const res = await apiReq('/user/loyalty/achievements/v2', 'GET');
+    if (res.code !== 200) { hideLoading(); return showAlert('❌ فشل جلب المهام', 'danger'); }
+    
+    const badges = res.body.badges || [];
+    let completed = 0, points = 0;
+    for (const category of badges) {
+        for (const task of (category.badges || [])) {
+            if (!task.rewarded) {
+                await apiReq('/loyalty/action/' + task.id, 'POST');
+                completed++;
+                points += task.reward?.points || 0;
+                await new Promise(r => setTimeout(r, 500));
+            }
+        }
+    }
+    const balanceRes = await apiReq('/user/loyalty/balance/details', 'GET');
+    state.balance = balanceRes.code === 200 ? (balanceRes.body.balance || 0) : state.balance;
+    hideLoading();
+    showAlert(completed > 0 ? `🎉 تم إنجاز ${completed} مهمة (+${points} كوينز)` : '📭 لا توجد مهام جديدة', completed > 0 ? 'success' : 'warning');
+    render();
+}
+
+async function redeemUnits() {
+    if (!state.token) return showAlert('الرجاء تسجيل الدخول أولاً', 'danger');
+    const select = document.getElementById('packageSelect');
+    if (!select || !select.value) return showAlert('اختر باقة أولاً', 'danger');
+    
+    const packages = { '50': 'EAND_50_UNITS_ID_9', '100': 'EAND_100_UNITS_ID_10', '150': 'EAND_150_UNITS_ID_11', '300': 'EAND_300_UNITS_ID_12', '500': 'EAND_500_UNITS_ID_13', '750': 'EAND_750_UNITS_ID_14', '1000': 'EAND_1000_UNITS_ID_15' };
+    const costs = { '50': 100, '100': 200, '150': 300, '300': 600, '500': 1000, '750': 1500, '1000': 2000 };
+    
+    if (state.balance < costs[select.value]) return showAlert(`⚠️ الرصيد غير كافٍ (لديك ${state.balance} كوينز)`, 'warning');
+    
+    showLoading('جاري استبدال الكوينزات...');
+    const res = await apiReq('/loyalty/redeem/' + packages[select.value], 'POST');
+    hideLoading();
+    if (res.code === 200) {
+        const balanceRes = await apiReq('/user/loyalty/balance/details', 'GET');
+        state.balance = balanceRes.code === 200 ? (balanceRes.body.balance || 0) : state.balance;
+        showAlert('✅ تم التبديل بنجاح!', 'success');
+        render();
+    } else {
+        showAlert('⚠️ تم التبديل، تأكد من التطبيق', 'warning');
+    }
+}
+
+function logout() {
+    state = { step: 'phone', phone: '', token: '', accessToken: '', tgToken: '', refreshToken: '', balance: 0, otpTime: null, otpAttempts: 0 };
+    render();
+}
+
+// ============================================
+// 5. دوال العرض (نفسها)
+// ============================================
+function render() {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+    if (state.step === 'phone') {
+        content.innerHTML = `
+            <div style="font-size:1.2rem;font-weight:700;text-align:center;color:#00f2fe;margin-bottom:15px;">📱 تسجيل الدخول</div>
+            <input type="tel" id="phoneInput" placeholder="مثال: 01012345678" inputmode="numeric">
+            <button onclick="sendOtp()">📱 إرسال رمز التحقق</button>
+        `;
+    } else if (state.step === 'verify') {
+        const rem = state.otpTime ? Math.max(0, 30 - Math.floor((Date.now() - state.otpTime) / 1000)) : 0;
+        content.innerHTML = `
+            <div style="font-size:1.2rem;font-weight:700;text-align:center;color:#00f2fe;margin-bottom:15px;">🔐 تأكيد الكود</div>
+            <div style="text-align:center;margin-bottom:10px;">تم إرسال الكود إلى <strong>${state.phone}</strong></div>
+            <div style="text-align:center;"><span class="timer">⏳ متبقي: ${rem} ثانية</span></div>
+            <input type="text" id="codeInput" placeholder="أدخل الكود 6 أرقام" maxlength="6" inputmode="numeric">
+            <button onclick="verifyOtp()">🔐 تحقق من الرمز</button>
+            <button onclick="resendOtp()" class="btn-success">📬 إعادة الإرسال</button>
+            <button onclick="goToPhone()" class="btn-outline">🔙 تغيير الرقم</button>
+        `;
+        if (rem > 0) {
+            const timerSpan = document.querySelector('.timer');
+            const interval = setInterval(() => {
+                const now = Math.max(0, 30 - Math.floor((Date.now() - state.otpTime) / 1000));
+                if (timerSpan) timerSpan.textContent = `⏳ متبقي: ${now} ثانية`;
+                if (now <= 0) clearInterval(interval);
+            }, 1000);
+        }
+    } else if (state.step === 'dashboard') {
+        content.innerHTML = `
+            <div style="font-size:1.2rem;font-weight:700;text-align:center;color:#00f2fe;margin-bottom:15px;">🎵 لوحة التحكم</div>
+            <div class="balance-box">💰 رصيدك الحالي <span class="amount">${state.balance}</span> كوينز</div>
+            <div class="notice">⚠️ تنويه: ليك 2000 وحدة فقط علي مدار الشهر.<br>لو خطك غير اتصالات مش هينفع تبدل وحدات.</div>
+            <button onclick="completeTasks()">📋 إنجاز جميع المهام</button>
+            <select id="packageSelect">
+                <option value="">-- اختر الباقة --</option>
+                <option value="50">50 وحدة (100 كوينز)</option>
+                <option value="100">100 وحدة (200 كوينز)</option>
+                <option value="150">150 وحدة (300 كوينز)</option>
+                <option value="300">300 وحدة (600 كوينز)</option>
+                <option value="500">500 وحدة (1000 كوينز)</option>
+                <option value="750">750 وحدة (1500 كوينز)</option>
+                <option value="1000">1000 وحدة (2000 كوينز)</option>
+            </select>
+            <button onclick="redeemUnits()" class="btn-success">🔄 تبديل الوحدات</button>
+            <button onclick="logout()" class="btn-danger">🚪 تسجيل خروج</button>
+        `;
+    }
+}
+
+// ============================================
+// 6. دوال مساعدة
+// ============================================
+function showAlert(msg, type = 'success') {
+    const content = document.getElementById('content');
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = msg;
+    content.prepend(alertDiv);
+    setTimeout(() => alertDiv.remove(), 5000);
+}
+
+function showLoading(text) {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <div style="text-align:center;padding:30px 0;">
+            <div class="spinner"></div>
+            <div style="color:#b3b0cd;margin-top:15px;">${text}</div>
+        </div>
+    `;
+}
+
+function hideLoading() { render(); }
+
+// ============================================
+// 7. تشغيل التطبيق
+// ============================================
+render();
+
+// فتح Console عشان نشوف الأخطاء
+console.log('🎵 تويست ميوزك - ويب');
+console.log('📱 افتح Console (F12) عشان تشوف التفاصيل');
+</script>
+</body>
+</html>
